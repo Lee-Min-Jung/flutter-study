@@ -22,6 +22,8 @@ class MyApp extends StatefulWidget { //stateful 위젯은 혼자서 화면을 �
 class _MyApp extends State<MyApp> {
   //StatelessWidget은 상태가 변경되지 않는 위젯
   var switchValue = false;
+  String test = 'hello';
+  Color _color = Colors.blue;
 
   // This widget is the root of your application.
   @override
@@ -39,16 +41,25 @@ class _MyApp extends State<MyApp> {
       darkTheme: ThemeData.light(),
       home: Scaffold( //scaffold 클래스를 통해 앱에 머티리얼 디자인 적용 가능
           body: Center(
-              child: Switch(
-                  value: switchValue,
-                  onChanged: (value) {
-                    setState(() { //플러터에서는 변숫값이 바뀌면 이 사실을 앱에 알려 화면을 갱신해야 한다. 화면 값을 바꾸려면 setState함수 안에서 해야 한다.
-                      //그래야 바뀐 값이 반영된 화면으로 갱신한다
-                      print(value);
-                      switchValue = value;
-                    });
-
-                  }))), //앱을 실행할 때 첫 화면에 어떤 내용 표시할지
+              child: ElevatedButton ( //버튼 위젯
+                  child: Text('$test'), //버튼에 들어갈 텍스트
+                  style: ElevatedButton.styleFrom( //버튼의 스타일
+                      primary: _color
+                  ),
+                  onPressed: () { //버튼이 눌러졌을 때 일어날 일 작성
+                    if (_color == Colors.blue) {
+                      setState(() {
+                        test = 'flutter';
+                        _color = Colors.amber;
+                      });
+                    } else {
+                      setState(() {
+                        test = 'flutter';
+                        _color = Colors.blue;
+                      });
+                    }
+                  }
+              ))), //앱을 실행할 때 첫 화면에 어떤 내용 표시할지
       //child옵션은 자신 아래 어떤 위젯을 넣겠다는 의미, 하나만 넣을 때는 child, 여러 개 넣을 때는 children
     );
   }
