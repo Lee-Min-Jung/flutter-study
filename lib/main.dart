@@ -1,125 +1,79 @@
-import 'package:flutter/material.dart'; //해당 소스 파일에서 사용하려는 패키지를 불러올 때 사용하는 구문
-import 'imageWidget.dart' ;
-
-//main에서 runApp을 통해 MyApp를 실행한다.
-//MyApp에서 MaterialApp를 반환하며 home에 MaterialFlutterApp을 실행한다
-//MaterialFlutterApp은 stateful이라 state클래스 상속받는 _MaterialFlutterApp을 실행시킨다
-//_MaterialFlutterApp은 Scaffold 안에 다양한 위젯을 담아 반환한다.
-
+import 'package:flutter/material.dart';
+import 'sub/firstPage.dart';
+import 'sub/secondPage.dart';
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
- static const String _title = 'Widget Example';
+  const MyApp({super.key});
 
- @override
+  // This widget is the root of your application.
+  @override
   Widget build(BuildContext context) {
-   return MaterialApp(
-     title: _title,
-     home: WidgetApp(),
-   );
- }
-}
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
 
-class WidgetApp extends StatefulWidget {
-  WidgetApp({Key? key}) : super(key: key);
-
-  @override
-  _WidgetExampleState createState() => _WidgetExampleState();
-}
-
-class _WidgetExampleState extends State<WidgetApp> {
-  var result;
-  TextEditingController value1 = TextEditingController();
-  TextEditingController value2 = TextEditingController();
-  List _buttonList = ['더하기','빼기','곱하기','나누기'];
-  List<DropdownMenuItem<Object>> _dropDownMenuItems = [];
-  String _buttonText = '';
-
-  @override
-  void initState() {
-    super.initState();
-    for(var item in _buttonList) {
-      _dropDownMenuItems.add(DropdownMenuItem(value: item, child: Text(item)));
-    }
-    _buttonText = _dropDownMenuItems[0].value.toString();
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
   }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin{ //singleTickerProviderStateMixin을 추가로 상속하여 탭을 눌렀을 때
+                                                          // _MyHomePageState 클래스에서 애니메이션 동작을 처리할 수 있게 한다
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Widget Example'),
+        title: Text('TabBar Example'),
       ),
-      body: Container(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Padding( //위젯 사이의 간격 넓히기, flutter 문구
-                padding: EdgeInsets.all(15), //사방 모든 공간에 여백
-                child: Text('flutter'),
-              ),
-              Padding( //입력창 1
-                padding: EdgeInsets.only(left:20, right:20), //동서남북 중 어디 여백 줄 지 지정 가능
-                child: TextField(keyboardType: TextInputType.number, controller: value1), //keyboardType는 사용자에게 보일 키보드 지정. 숫자나 한글이나 등등
-              ),
-              Padding( //입력창 2
-                padding: EdgeInsets.only(left:20, right:20),
-                child: TextField(keyboardType: TextInputType.number, controller: value2),
-              ),
-              Padding( //계산 진행 버튼
-                padding: EdgeInsets.all(15),
-                child: ElevatedButton(
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.add),
-                      Text(_buttonText)
-                    ],
-                  ),
-                  style: ElevatedButton.styleFrom( //버튼의 스타일
-                      primary: Colors.amber
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      var value1Int = double.parse(value1.value.text);
-                      var value2Int = double.parse(value2.value.text);
-
-                      if(_buttonText == '더하기') {
-                        result = value1Int + value2Int;
-                      } else if (_buttonText == '빼기') {
-                        result = value1Int  - value2Int;
-                      } else if (_buttonText == '곱하기') {
-                        result = value1Int  * value2Int;
-                      } else if (_buttonText == '나누기') {
-                        result = value1Int  / value2Int;
-                      }
-                    });
-                  },
-
-                ),
-              ),
-              Padding( //결과 나오는 곳
-                padding: EdgeInsets.all(15),
-                child: Text(
-                  '결과 : $result',
-                  style: TextStyle(fontSize: 20),
-                )
-              ),
-              Padding( //사칙연산버튼
-                padding: EdgeInsets.all(15),
-                child: DropdownButton(items: _dropDownMenuItems, onChanged: (value) {
-                  setState(() {
-                    _buttonText = value.toString();
-                  });
-                }, value: _buttonText,),
-              )
-
-
-            ]
-          ),
-        ),
+      body: TabBarView(
+        children: <Widget>[FirstApp(), SecondApp()],
+        controller: controller,
       ),
+      bottomNavigationBar: TabBar(tabs: <Tab>[
+        Tab(icon: Icon(Icons.looks_one, color: Colors.blue),),
+        Tab(icon: Icon(Icons.looks_two, color: Colors.blue),)
+      ], controller: controller)
     );
   }
+    @override //탭 컨트롤러는 애니메이션을 이용하므로 dispose해야 메모리 누수를 막을 수 있다
+    void dispose() {
+      controller.dispose();
+      super.dispose();
+
+  }
+  int _counter = 0;
+  late TabController controller;
+
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TabController(length:2, vsync: this); //vsync에는 탭이 이동했을 때 호출되는 콜백 함수를 어디서 처리할지 지정함
+  }
+
+  void _incrementCounter() {
+    setState(() {
+
+      _counter++;
+    });
+  }
+
+
 }
