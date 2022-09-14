@@ -58,8 +58,16 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+#  사용하고자 하는 사진의 url을 여기에 등록하기
   assets:
-    - image/dog.PNG
+    - repo/images/bee.png
+    - repo/images/cat.png
+    - repo/images/cow.png
+    - repo/images/dog.png
+    - repo/images/fox.png
+    - repo/images/monkey.png
+    - repo/images/pig.png
+    - repo/images/wolf.png
   fonts:
     - family: MsMadi
       fonts:

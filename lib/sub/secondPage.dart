@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import '../animalItem.dart'; //animal 클래스 사용을 위한 import
 
 class SecondApp extends StatelessWidget {
+  final List<Animal> list;
+  SecondApp({Key? key, required this.list}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
