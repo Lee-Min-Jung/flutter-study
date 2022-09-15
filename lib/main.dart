@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
         title: Text('Listview Example'),
       ),
       body: TabBarView( //가운데 화면. 근데 내비게이션 탭에 따라 달라져야 해서 나오게 할 화면의 class를 등록해 놓는다
-        children: <Widget>[FirstApp(list: animalList), SecondApp(list: animalList)],
+        children: <Widget>[FirstApp(list: animalList), SecondApp(list:animalList)],
         controller: controller,
       ),
       bottomNavigationBar: TabBar(tabs: <Tab>[ //맨 아래에 나오는 내비게이션 탭 부분
